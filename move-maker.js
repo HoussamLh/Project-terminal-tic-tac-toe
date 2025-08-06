@@ -15,22 +15,50 @@
             ['O', 'O', 'X']
         ];
 */
+
 function validateMove(move, board) {
-    // Implement this at the end if you have time, otherwise you can help your teammates!
+    const regex = /^[1-3],[1-3]$/;
+    if (!regex.test(move)) {
+        console.log("Try again...");
+        return false;
+    }
+
+    const [rowStr, colStr] = move.split(",");
+    const row = parseInt(rowStr) - 1;
+    const col = parseInt(colStr) - 1;
+
+    if (board[row][col] !== "_") {
+        console.log("Try again...");
+        return false;
+    }
+
     return true;
 }
 
-/*
-    Given 3 parameters:
-        - a board (an array of arrays)
-        - a move (2 numbers separated by a comma)
-        - a player ('X' or 'O'):
-    Check that the move is valid using the validateMove function.
-        If the move is not valid, the function should just return false.
-        If the move is valid, the function should:
-            - Update the board with the player's value ('X' or 'O') in the correct position
-            - Return true
-*/
 export function makeMove(board, move, player) {
-    return false;
+    if (!validateMove(move, board)) {
+        return false;
+    }
+
+    const [rowStr, colStr] = move.split(",");
+    const row = parseInt(rowStr) - 1;
+    const col = parseInt(colStr) - 1;
+
+    board[row][col] = player;
+    return true;
 }
+
+// --- Test validateMove and makeMove ---
+let board = [
+    ['X', '_', '_'],
+    ['_', 'X', '_'],
+    ['O', 'O', 'X']
+];
+
+console.log("Before:", board);
+console.log("Move result:", makeMove(board, "1,2", "O")); // true
+console.log("After:", board);
+// Invalid move (already filled)
+console.log("Move result:", makeMove(board, "1,1", "X")); // false
+// Invalid format
+console.log("Move result:", makeMove(board, "4,2", "O")); // false
