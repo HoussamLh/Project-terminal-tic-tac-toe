@@ -1,15 +1,6 @@
 import { checkIfNoMovesLeft } from './board-printer.js';
 
 /*
-    Example board:
-        let board = [
-            ['X', '_', '_'],
-            ['_', 'X', '_'],
-            ['O', 'O', 'X']
-        ];
-*/
-
-/*
     Given 3 parameters:
         - a tic-tac-toe board (array of arrays)
         - a player ('X' or 'O')
@@ -80,10 +71,9 @@ export function isGameOver(board) {
     }
 
     if(checkIfNoMovesLeft(board)) {
-        console.log('Game Over - It\'s a tie!\n');
+        console.log('Game Over - It\'s a tie!\n');  // Correct escape sequence, and removed duplicate
         return true;
     }
 
     return false;
 }
-
