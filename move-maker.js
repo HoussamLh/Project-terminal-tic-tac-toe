@@ -1,49 +1,41 @@
-/*
-    Given a move and a board (an array of arrays), return true if the move is valid.
-        A move is represented by 2 numbers separated by a comma.
-        The first number is the row (1, 2 or 3) and the second number is the column (1, 2 or 3).
-            Some valid example moves are 1,3 and 2,2.
-            Some invalid examples are 0,1 and 2-1.
-    Also, a move can only be made in a free space ('_') on the board.
-    If the move is not valid:
-        - you can output 'Try again...'
-        - and then return false
-    Testing your function by calling it with some values. An example board is:
-        let board = [
-            ['X', '_', '_'],
-            ['_', 'X', '_'],
-            ['O', 'O', 'X']
-        ];
-*/
+function parseMove(move) {
+    // Trim whitespace and split
+    const trimmedMove = move.trim();
+    const regex = /^[1-3],[1-3]$/;
+    if (!regex.test(trimmedMove)) {
+        return null;
+    }
+    const [rowStr, colStr] = trimmedMove.split(",");
+    const row = parseInt(rowStr, 10) - 1;
+    const col = parseInt(colStr, 10) - 1;
+    return { row, col };
+}
 
 function validateMove(move, board) {
-    const regex = /^[1-3],[1-3]$/;
-    if (!regex.test(move)) {
-        console.log("Try again...");
+    const coords = parseMove(move);
+    if (!coords) {
+        console.log("Invalid format. Please enter row,col with numbers 1 to 3.");
         return false;
     }
-
-    const [rowStr, colStr] = move.split(",");
-    const row = parseInt(rowStr) - 1;
-    const col = parseInt(colStr) - 1;
-
+    const { row, col } = coords;
     if (board[row][col] !== "_") {
-        console.log("Try again...");
+        console.log("That spot is already taken. Try again...");
         return false;
     }
-
     return true;
 }
 
 export function makeMove(board, move, player) {
+    if (player !== "X" && player !== "O") {
+        console.log("Invalid player. Must be 'X' or 'O'.");
+        return false;
+    }
+
     if (!validateMove(move, board)) {
         return false;
     }
 
-    const [rowStr, colStr] = move.split(",");
-    const row = parseInt(rowStr) - 1;
-    const col = parseInt(colStr) - 1;
-
+    const { row, col } = parseMove(move);
     board[row][col] = player;
     return true;
 }
@@ -62,3 +54,6 @@ console.log("After:", board);
 console.log("Move result:", makeMove(board, "1,1", "X")); // false
 // Invalid format
 console.log("Move result:", makeMove(board, "4,2", "O")); // false
+// Invalid player
+console.log("Move result:", makeMove(board, "2,2", "Z")); // false
+
