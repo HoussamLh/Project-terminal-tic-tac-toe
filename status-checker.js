@@ -1,15 +1,6 @@
 import { checkIfNoMovesLeft } from './board-printer.js';
 
 /*
-    Example board:
-        let board = [
-            ['X', '_', '_'],
-            ['_', 'X', '_'],
-            ['O', 'O', 'X']
-        ];
-*/
-
-/*
     Given 3 parameters:
         - a tic-tac-toe board (array of arrays)
         - a player ('X' or 'O')
@@ -18,6 +9,7 @@ import { checkIfNoMovesLeft } from './board-printer.js';
     Otherwise, return false
 */
 function checkRow(board, player, rowNumber) {
+    return board[rowNumber].every(cell => cell === player);
 }
 
 /*
@@ -29,6 +21,7 @@ function checkRow(board, player, rowNumber) {
     Otherwise, return false
 */
 function checkColumn(board, player, columnNumber) {
+    return board.every(row => row[columnNumber] === player);
 }
 
 /*
@@ -39,9 +32,14 @@ function checkColumn(board, player, columnNumber) {
     Otherwise, return false
 */
 function checkDiagonal(board, player) {
-    // It may be easier to use an if statement than a loop here
-}
+    // Check top-left to bottom-right diagonal
+    const diag1 = board[0][0] === player && board[1][1] === player && board[2][2] === player;
 
+    // Check top-right to bottom-left diagonal
+    const diag2 = board[0][2] === player && board[1][1] === player && board[2][0] === player;
+
+    return diag1 || diag2;
+}
 
 /*
     There is no need to change any code below this line.
@@ -73,7 +71,7 @@ export function isGameOver(board) {
     }
 
     if(checkIfNoMovesLeft(board)) {
-        console.log('Game Over - It\s a tie!\n');
+        console.log('Game Over - It\'s a tie!\n');  // Correct escape sequence, and removed duplicate
         return true;
     }
 
