@@ -1,36 +1,59 @@
-/*
-    Given a move and a board (an array of arrays), return true if the move is valid.
-        A move is represented by 2 numbers separated by a comma.
-        The first number is the row (1, 2 or 3) and the second number is the column (1, 2 or 3).
-            Some valid example moves are 1,3 and 2,2.
-            Some invalid examples are 0,1 and 2-1.
-    Also, a move can only be made in a free space ('_') on the board.
-    If the move is not valid:
-        - you can output 'Try again...'
-        - and then return false
-    Testing your function by calling it with some values. An example board is:
-        let board = [
-            ['X', '_', '_'],
-            ['_', 'X', '_'],
-            ['O', 'O', 'X']
-        ];
-*/
+function parseMove(move) {
+    // Trim whitespace and split
+    const trimmedMove = move.trim();
+    const regex = /^[1-3],[1-3]$/;
+    if (!regex.test(trimmedMove)) {
+        return null;
+    }
+    const [rowStr, colStr] = trimmedMove.split(",");
+    const row = parseInt(rowStr, 10) - 1;
+    const col = parseInt(colStr, 10) - 1;
+    return { row, col };
+}
+
 function validateMove(move, board) {
-    // Implement this at the end if you have time, otherwise you can help your teammates!
+    const coords = parseMove(move);
+    if (!coords) {
+        console.log("Invalid format. Please enter row,col with numbers 1 to 3.");
+        return false;
+    }
+    const { row, col } = coords;
+    if (board[row][col] !== "_") {
+        console.log("That spot is already taken. Try again...");
+        return false;
+    }
     return true;
 }
 
-/*
-    Given 3 parameters:
-        - a board (an array of arrays)
-        - a move (2 numbers separated by a comma)
-        - a player ('X' or 'O'):
-    Check that the move is valid using the validateMove function.
-        If the move is not valid, the function should just return false.
-        If the move is valid, the function should:
-            - Update the board with the player's value ('X' or 'O') in the correct position
-            - Return true
-*/
 export function makeMove(board, move, player) {
-    return false;
+    if (player !== "X" && player !== "O") {
+        console.log("Invalid player. Must be 'X' or 'O'.");
+        return false;
+    }
+
+    if (!validateMove(move, board)) {
+        return false;
+    }
+
+    const { row, col } = parseMove(move);
+    board[row][col] = player;
+    return true;
 }
+
+// --- Test validateMove and makeMove ---
+let board = [
+    ['X', '_', '_'],
+    ['_', 'X', '_'],
+    ['O', 'O', 'X']
+];
+
+console.log("Before:", board);
+console.log("Move result:", makeMove(board, "1,2", "O")); // true
+console.log("After:", board);
+// Invalid move (already filled)
+console.log("Move result:", makeMove(board, "1,1", "X")); // false
+// Invalid format
+console.log("Move result:", makeMove(board, "4,2", "O")); // false
+// Invalid player
+console.log("Move result:", makeMove(board, "2,2", "Z")); // false
+
