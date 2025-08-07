@@ -18,4 +18,14 @@ describe("checkIfNoMovesLeft", () => {
     ];
     expect(checkIfNoMovesLeft(board)).toBe(false);
   });
+
+  test("returns false when only one '_' is left", () => {
+    const board = [
+      ['X', 'O', 'X'],
+      ['O', '_', 'O'],
+      ['X', 'O', 'X']
+    ];
+    expect(checkIfNoMovesLeft(board)).toBe(false);
+  });
 });
+
