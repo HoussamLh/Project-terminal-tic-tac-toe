@@ -1,3 +1,7 @@
+// this is the main file to run the game 
+// as I'm working on the tic-tac-toe game alone 
+// I will put Person A as a responsible for the Integrate game play logic
+
 import prompt from 'prompt';
 import { isGameOver } from './status-checker.js';
 import { makeMove } from './move-maker.js';
